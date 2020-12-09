@@ -1,13 +1,25 @@
 import React from 'react';
 import { Team } from '../../../services/Teams/teams.service';
-import { CardWrapper } from './style';
-// import { SvgCssUri } from 'react-native-svg'
+import { BorderWrapper, CardWrapper, ImageWrapper, Title, TitleWrapper } from './style';
 
-const TeamCard: React.FC<Team> = ({ WikipediaLogoUrl }) => {
+interface TeamCardProps {
+  team: Team
+  onPress: (team: Team) => void
+}
+
+const TeamCard: React.FC<TeamCardProps> = ({ team, onPress }) => {
+  const { PrimaryColor, WikipediaLogoUrl, City, Name } = team
+
   return (
-    <CardWrapper source={{ uri: WikipediaLogoUrl }}>
-      {/* <SvgCssUri uri={WikipediaLogoUrl} width="150" height="150" /> */}
-    </CardWrapper>
+    <BorderWrapper onPress={() => onPress(team)}>
+      <CardWrapper color={PrimaryColor}>
+        <ImageWrapper source={{ uri: WikipediaLogoUrl }} />
+        <TitleWrapper>
+          <Title color={PrimaryColor} >{City}</Title>
+          <Title color={PrimaryColor}>{Name}</Title>
+        </TitleWrapper>
+      </CardWrapper>
+    </BorderWrapper>
   )
 }
 

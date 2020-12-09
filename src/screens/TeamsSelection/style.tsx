@@ -1,22 +1,31 @@
 import styled from 'styled-components/native'
 import Constants from 'expo-constants'
+import Animated from 'react-native-reanimated'
+import { NBA_BLUE_OPACITY_BLUE } from '../../constants/colors'
 
 const statusBarHeight = Constants.statusBarHeight
 
 export const TeamsWrapper = styled.SafeAreaView`
   flex: 1;
-  /* width: 100%; */
-  /* display: flex; */
-  /* flex-wrap: wrap; */
-  /* flex-direction: row; */
   padding-top: ${statusBarHeight + 10}px;
-  /* justify-content: center; */
+  background-color: ${NBA_BLUE_OPACITY_BLUE};
 `;
 
-export const TeamScroll = styled.ScrollView`
-  /* display: flex;
-  flex-direction: row; */
-  background-color: aliceblue;
-  /* flex: 1;
-  width: 100%; */
+export const SelectedTeamWrapper = styled(Animated.View)`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+export const TeamsScroll = styled(Animated.ScrollView)``;
+
+export const TeamsContent = styled.View`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 10px 20px;
+  justify-content: space-around;
 `;
