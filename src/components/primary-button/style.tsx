@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { NBA_BLUE_COLOR } from "../../constants/colors";
+import { NBA_BLUE_COLOR, SECONDARY_COLOR } from "../../constants/colors";
 
 export const ButtonWrapper = styled.TouchableOpacity`
   background-color: ${NBA_BLUE_COLOR};
@@ -10,7 +10,7 @@ export const ButtonWrapper = styled.TouchableOpacity`
 `;
 
 export const ButtonLabel = styled.Text`
-  color: #fff;
+  color: ${SECONDARY_COLOR};
   font-size: 18px;
   text-align: center;
 `;

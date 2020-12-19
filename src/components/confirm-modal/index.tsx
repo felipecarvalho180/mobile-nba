@@ -6,10 +6,11 @@ import { ButtonsWrapper, Logo, LogoWrapper, Message, MessageWrapper } from './st
 
 interface ConfirmModalProps {
   team: Team
-  onPress: (team: Team) => void
+  onNegativePress: (team: Team) => void
+  onPositivePress: () => void
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ team, onPress }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ team, onNegativePress, onPositivePress }) => {
   const { WikipediaLogoUrl, City, Name } = team;
 
   return (
@@ -19,8 +20,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ team, onPress }) => {
       </LogoWrapper>
       <Message>Você confirma {City} {Name} como seu time favorito ?</Message>
       <ButtonsWrapper>
-        <PrimaryButton />
-        <SecondaryButton onPress={() => onPress(team)} />
+        <PrimaryButton onPress={onPositivePress} />
+        <SecondaryButton onPress={() => onNegativePress(team)} />
       </ButtonsWrapper>
     </MessageWrapper>
   )

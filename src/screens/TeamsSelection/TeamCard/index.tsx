@@ -1,6 +1,6 @@
 import React from 'react';
 import { Team } from '../../../services/Teams/teams.service';
-import { BorderWrapper, CardWrapper, ImageWrapper, Title, TitleWrapper } from './style';
+import { BorderWrapper, CardWrapper, ImageWrapper } from './style';
 
 interface TeamCardProps {
   team: Team
@@ -8,16 +8,12 @@ interface TeamCardProps {
 }
 
 const TeamCard: React.FC<TeamCardProps> = ({ team, onPress }) => {
-  const { PrimaryColor, WikipediaLogoUrl, City, Name } = team
+  const { WikipediaLogoUrl } = team
 
   return (
     <BorderWrapper onPress={() => onPress(team)}>
-      <CardWrapper color={PrimaryColor}>
+      <CardWrapper>
         <ImageWrapper source={{ uri: WikipediaLogoUrl }} />
-        <TitleWrapper>
-          <Title color={PrimaryColor} >{City}</Title>
-          <Title color={PrimaryColor}>{Name}</Title>
-        </TitleWrapper>
       </CardWrapper>
     </BorderWrapper>
   )

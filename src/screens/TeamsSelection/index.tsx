@@ -5,10 +5,15 @@ import { getTeams, Team } from '../../services/Teams/teams.service'
 import { useAnimatedStyle, useSharedValue, withTiming, interpolate, Extrapolate } from 'react-native-reanimated'
 import { Dimensions } from 'react-native'
 import ConfirmModal from '../../components/confirm-modal'
+import app from '../../services/app'
+import { TEAM_SERVICE } from '../../constants/services'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 
 const screenHeight = Dimensions.get('screen').height
 
 const TeamsSelection: React.FC = () => {
+  const navigation = useNavigation()
+
   const teamsWrapperAnimation = useSharedValue(1)
   const selectedTeamAnimation = useSharedValue(0)
 
@@ -50,6 +55,17 @@ const TeamsSelection: React.FC = () => {
     }
   }
 
+  async function handleTeamConfirm() {
+    await app.setStorage({ id: TEAM_SERVICE, value: selectedTeam })
+    setSelectedTeam(undefined)
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Menu' }]
+      })
+    )
+  }
+
   const teamsWrapperStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -85,7 +101,7 @@ const TeamsSelection: React.FC = () => {
     <TeamsWrapper>
       {selectedTeam && (
         <SelectedTeamWrapper style={selectedTeamStyle}>
-          <ConfirmModal team={selectedTeam} onPress={handleTeamSelect} />
+          <ConfirmModal team={selectedTeam} onNegativePress={handleTeamSelect} onPositivePress={handleTeamConfirm} />
         </SelectedTeamWrapper>
       )}
       <TeamsScroll style={[teamsWrapperStyle]}>

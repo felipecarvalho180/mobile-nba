@@ -1,9 +1,13 @@
 import React from 'react'
 import { ButtonLabel, ButtonWrapper } from './style'
 
-const PrimaryButton: React.FC = () => {
+interface SecondaryButtonProps {
+  onPress: () => void
+}
+
+const PrimaryButton: React.FC<SecondaryButtonProps> = ({ onPress }) => {
   return (
-    <ButtonWrapper>
+    <ButtonWrapper onPress={onPress}>
       <ButtonLabel>Sim</ButtonLabel>
     </ButtonWrapper>
   )

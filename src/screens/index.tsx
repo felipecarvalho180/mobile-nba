@@ -1,3 +1,4 @@
 import TeamsSelection from './TeamsSelection'
+import Menu from './Menu'
 
-export { TeamsSelection }
+export { TeamsSelection, Menu }

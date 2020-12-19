@@ -1,37 +1,30 @@
 import Animated from 'react-native-reanimated';
-import styled, { css } from 'styled-components/native'
-
-interface ComponentsProps {
-  color?: string
-}
+import styled from 'styled-components/native'
+import { NBA_BLUE_COLOR, SECONDARY_COLOR } from '../../../constants/colors';
 
 export const BorderWrapper = styled.TouchableOpacity`
   padding: 2px;
-  background-color: #fff;
+  background-color: ${SECONDARY_COLOR};
   margin: 5px;
   border-radius: 10px;
-  width: 100%;
 `;
 
 export const CardWrapper = styled(Animated.View)`
   width: 100%;
-  background-color: #fff;
+  background-color: ${SECONDARY_COLOR};
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  ${(props: ComponentsProps) => props.color && css`
-    border-color: #${props.color};
-    border-width: 1px;
-  `}
+  border-color: ${NBA_BLUE_COLOR};
+  border-width: 2px;
 `;
 
 export const ImageWrapper = styled.Image`
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   align-self: center;
-  margin-right: 10px;
 `;
 
 export const TitleWrapper = styled.View`
@@ -42,7 +35,5 @@ export const TitleWrapper = styled.View`
 export const Title = styled.Text`
   font-size: 26px;
   font-weight: bold;
-  ${(props: ComponentsProps) => props.color && css`
-    color: #${props.color};
-  `}
+  color: ${NBA_BLUE_COLOR};
 `;
