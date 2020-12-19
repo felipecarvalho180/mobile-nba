@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { TeamScroll, TeamsWrapper } from './style'
+import { SelectedTeamWrapper, TeamsContent, TeamsScroll, TeamsWrapper } from './style'
 import TeamCard from './TeamCard'
 import { getTeams, Team } from '../../services/Teams/teams.service'
-import { ScrollView } from 'react-native'
+import { useAnimatedStyle, useSharedValue, withTiming, interpolate, Extrapolate } from 'react-native-reanimated'
+import { Dimensions } from 'react-native'
+import ConfirmModal from '../../components/confirm-modal'
+import app from '../../services/app'
+import { TEAM_SERVICE } from '../../constants/services'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 
+const screenHeight = Dimensions.get('screen').height
 
 const TeamsSelection: React.FC = () => {
+  const navigation = useNavigation()
+
+  const teamsWrapperAnimation = useSharedValue(1)
+  const selectedTeamAnimation = useSharedValue(0)
+
   const [teams, setTeams] = useState<Team[]>([])
+  const [selectedTeam, setSelectedTeam] = useState<Team>()
 
   useEffect(() => {
     async function getDataTeams() {
@@ -15,13 +27,90 @@ const TeamsSelection: React.FC = () => {
     } getDataTeams()
   }, [])
 
+  useEffect(() => {
+    if (selectedTeam) {
+      selectedTeamAnimation.value = withTiming(-70, {
+        duration: 250
+      }, () => {
+        teamsWrapperAnimation.value = withTiming(0, {
+          duration: 500
+        })
+      })
+    } else {
+      teamsWrapperAnimation.value = withTiming(1, {
+        duration: 500
+      }, () => {
+        selectedTeamAnimation.value = withTiming(0, {
+          duration: 250
+        })
+      })
+    }
+  }, [selectedTeam])
+
+  function handleTeamSelect(team: Team) {
+    if (selectedTeam?.Key !== team.Key) {
+      setSelectedTeam(team)
+    } else {
+      setSelectedTeam(undefined)
+    }
+  }
+
+  async function handleTeamConfirm() {
+    await app.setStorage({ id: TEAM_SERVICE, value: selectedTeam })
+    setSelectedTeam(undefined)
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Menu' }]
+      })
+    )
+  }
+
+  const teamsWrapperStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        teamsWrapperAnimation.value,
+        [0, 1],
+        [0, 1],
+        Extrapolate.CLAMP
+      ),
+      height: interpolate(
+        teamsWrapperAnimation.value,
+        [0, 1],
+        [0, screenHeight],
+        Extrapolate.CLAMP
+      )
+    }
+  })
+
+  const selectedTeamStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        selectedTeamAnimation.value,
+        [0, -70],
+        [0, 1],
+        Extrapolate.CLAMP
+      ),
+      transform: [{
+        translateY: selectedTeamAnimation.value
+      }]
+    }
+  })
+
   return (
     <TeamsWrapper>
-      <TeamScroll>
-        {teams.map((team) => (
-          <TeamCard key={team.Key} {...team} />
-        ))}
-      </TeamScroll>
+      {selectedTeam && (
+        <SelectedTeamWrapper style={selectedTeamStyle}>
+          <ConfirmModal team={selectedTeam} onNegativePress={handleTeamSelect} onPositivePress={handleTeamConfirm} />
+        </SelectedTeamWrapper>
+      )}
+      <TeamsScroll style={[teamsWrapperStyle]}>
+        <TeamsContent>
+          {teams.map((team) => (
+            <TeamCard key={team.Key} team={team} onPress={handleTeamSelect} />
+          ))}
+        </TeamsContent>
+      </TeamsScroll>
     </TeamsWrapper>
   )
 }

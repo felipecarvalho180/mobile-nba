@@ -16,6 +16,7 @@ export interface Team {
   QuaternaryColor: string
   WikipediaLogoUrl: string
   GlobalTeamID: number,
+  NbaDotComTeamID: string
 }
 
 const getTeams = async () => {

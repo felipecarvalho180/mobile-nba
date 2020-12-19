@@ -1,0 +1,1 @@
+const FaceURl = 'https://nlnbamdnyc-a.akamaihd.net/nba/media/img/players/head/132x132/${personId}.png'
